@@ -4,10 +4,8 @@ const path = require("path");
 const router = app.Router();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-const Log = require("log");
-
-const log = new Log("debug");
-
+const Log = require("log"),
+  log = new Log("debug");
 const port = process.env.port || 3000;
 
 router.get("/", (req, res) => {
@@ -21,9 +19,14 @@ router.get("/visitors", (req, res) => {
 // Add the router
 app.use("/", router);
 
-// setInterval(() => {
-//   io.emit("image", "Hello");
-// }, 1000);
+// Listening new client connection
+io.on("connection", socket => {
+  // Listining strem petition by socket
+  socket.on("stream", video => {
+    // Send video by socket
+    socket.broadcast.emit("stream", video);
+  });
+});
 
 // Running server
 server.listen(port, () => {
