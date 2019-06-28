@@ -8,6 +8,10 @@
   </head>
   <body>
     <video id="video" width="640" height="480" autoplay></video>
+    <div><p id="logger"></p></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <script>
       const config = {
@@ -60,13 +64,27 @@
       }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script>
       // const socket = io.connect("http://localhost:3000");
       // socket.on("image", image => {
       //   const imageElm = document.getElementById("image");
       //   imageElm.src = `data:image/jpeg;base64,${image}`;
       // });
+
+      const video = document.getElementById("video");
+      const socket = io();
+
+      function logger(msg) {
+        $("#logger").text(msg);
+      }
+
+      function loadVideo(strem) {
+        logger("Camara available");
+      }
+
+      function loadFail() {
+        logger("Camara not available");
+      }
     </script>
   </body>
 </html>
