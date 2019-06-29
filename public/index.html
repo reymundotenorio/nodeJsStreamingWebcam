@@ -14,18 +14,31 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
+      function logger(msg) {
+        $("#logger").text(msg);
+      }
+
+      function loadSuccessfully(stream) {
+        logger("Camara available");
+      }
+
+      function loadFail() {
+        logger("Camara not available");
+      }
+
       const config = {
         video: true,
         audio: true
       };
 
-      // Grab elements, create settings, etc.
+      // Get video element
       const video = document.getElementById("video");
 
       // Get access to the camera!
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(config).then(stream => {
           //video.src = window.URL.createObjectURL(stream);
+          loadSuccessfully();
           video.srcObject = stream;
           video.play();
         }); // Legacy code below: getUserMedia
@@ -34,57 +47,49 @@
         navigator.getUserMedia(
           config,
           stream => {
+            loadSuccessfully();
             video.src = stream;
             video.play();
           },
-          errBack
+          loadFail()
         );
       } else if (navigator.webkitGetUserMedia) {
         // WebKit-prefixed
         navigator.webkitGetUserMedia(
           config,
           stream => {
+            loadSuccessfully();
             video.src = window.webkitURL.createObjectURL(stream);
             video.play();
           },
-          errBack
+          loadFail()
         );
       } else if (navigator.mozGetUserMedia) {
         // Mozilla-prefixed
         navigator.mozGetUserMedia(
           config,
           stream => {
+            loadSuccessfully();
             video.srcObject = stream;
             video.play();
           },
-          errBack
+          loadFail()
         );
       } else {
-        console.error("getUserMedia() is not supported by your browser");
+        loadFail();
       }
     </script>
 
     <script>
-      // const socket = io.connect("http://localhost:3000");
-      // socket.on("image", image => {
-      //   const imageElm = document.getElementById("image");
-      //   imageElm.src = `data:image/jpeg;base64,${image}`;
-      // });
-
-      const video = document.getElementById("video");
       const socket = io();
+      const FPS = 30;
 
-      function logger(msg) {
-        $("#logger").text(msg);
-      }
-
-      function loadVideo(strem) {
-        logger("Camara available");
-      }
-
-      function loadFail() {
-        logger("Camara not available");
-      }
+      setInterval(() => {
+        socket.emit(
+          "stream",
+          `data:video/mp4;base64,${btoa(video.src || video.srcObject)}`
+        );
+      }, 1000 / FPS);
     </script>
   </body>
 </html>

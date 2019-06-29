@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Video streaming</title>
+  </head>
+  <body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <div><p id="logger"></p></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      function logger(msg) {
+        $("#logger").text(msg);
+      }
+
+      const socket = io();
+
+      socket.on("stream", videoBase64 => {
+        // Get video element
+        const video = document.getElementById("video");
+        video.src = videoBase64;
+        logger(videoBase64);
+      });
+    </script>
+  </body>
+</html>
