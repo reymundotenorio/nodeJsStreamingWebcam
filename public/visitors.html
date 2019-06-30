@@ -20,11 +20,13 @@
 
       const socket = io();
 
-      socket.on("stream", videoBase64 => {
+      socket.on("stream", stream => {
         // Get video element
         const video = document.getElementById("video");
-        video.src = videoBase64;
-        logger(videoBase64);
+        
+        video.srcObject = stream;
+        video.play();
+        logger(stream);
       });
     </script>
   </body>

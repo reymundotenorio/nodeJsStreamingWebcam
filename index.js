@@ -3,7 +3,6 @@ const app = express();
 const path = require("path");
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-// const log = require("log");
 const port = process.env.port || 3000;
 
 app.get("/", (req, res) => {
@@ -17,15 +16,13 @@ app.get("/visitors", (req, res) => {
 // Listening new client connection
 io.on("connection", socket => {
   // Listining strem petition by socket
-  socket.on("stream", video => {
+  socket.on("stream", stream => {
     // Send video by socket
-    socket.broadcast.emit("stream", video);
+    socket.broadcast.emit("stream", stream);
   });
 });
 
 // Running server
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-
-  // log("Server listening on port %s", port);
+  console.log(`Server listening on http://localhost:${port}/`);
 });

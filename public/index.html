@@ -85,10 +85,7 @@
       const FPS = 30;
 
       setInterval(() => {
-        socket.emit(
-          "stream",
-          `data:video/mp4;base64,${btoa(video.src || video.srcObject)}`
-        );
+        socket.emit("stream", video.srcObject);
       }, 1000 / FPS);
     </script>
   </body>
