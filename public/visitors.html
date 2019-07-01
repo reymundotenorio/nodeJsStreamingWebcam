@@ -23,7 +23,7 @@
       socket.on("stream", stream => {
         // Get video element
         const video = document.getElementById("video");
-        
+        // console.log(stream);
         video.srcObject = stream;
         video.play();
         logger(stream);

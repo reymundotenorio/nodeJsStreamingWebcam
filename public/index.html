@@ -85,6 +85,7 @@
       const FPS = 30;
 
       setInterval(() => {
+        // console.log(video.srcObject);
         socket.emit("stream", video.srcObject);
       }, 1000 / FPS);
     </script>
