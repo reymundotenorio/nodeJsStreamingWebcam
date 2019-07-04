@@ -85,17 +85,20 @@
       const canvas = document.getElementById("canvas_video");
       const canvasContext = canvas.getContext("2d");
 
+      canvas.style.display = "none";
+
       const socket = io();
       const FPS = 30;
 
       setInterval(() => {
-        if (!video.paused && !video.ended) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          canvasContext.drawImage(video, 0, 0);
-        }
-        // console.log(video.srcObject);
-        socket.emit("stream", video.srcObject);
+        // if (!video.paused && !video.ended) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvasContext.drawImage(video, 0, 0);
+        // }
+
+        // canvas.toDataURL("image/jpeg");
+        socket.emit("stream", canvas.toDataURL());
       }, 1000 / FPS);
     </script>
   </body>

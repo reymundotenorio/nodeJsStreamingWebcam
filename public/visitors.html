@@ -7,7 +7,7 @@
     <title>Video streaming</title>
   </head>
   <body>
-    <video id="video" width="640" height="480" autoplay></video>
+    <img id="img_video"></img>
     <div><p id="logger"></p></div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -18,15 +18,12 @@
         $("#logger").text(msg);
       }
 
+      const imgVideo = document.getElementById("img_video");
       const socket = io();
 
       socket.on("stream", stream => {
-        // Get video element
-        const video = document.getElementById("video");
-        // console.log(stream);
-        video.srcObject = stream;
-        video.play();
-        logger(stream);
+        imgVideo.src = stream;
+        logger("Ok");
       });
     </script>
   </body>
