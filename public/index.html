@@ -9,6 +9,7 @@
   <body>
     <video id="video" width="640" height="480" autoplay></video>
     <div><p id="logger"></p></div>
+    <canvas id="canvas_video"></canvas>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -81,10 +82,18 @@
     </script>
 
     <script>
+      const canvas = document.getElementById("canvas_video");
+      const canvasContext = canvas.getContext("2d");
+
       const socket = io();
       const FPS = 30;
 
       setInterval(() => {
+        if (!video.paused && !video.ended) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          canvasContext.drawImage(video, 0, 0);
+        }
         // console.log(video.srcObject);
         socket.emit("stream", video.srcObject);
       }, 1000 / FPS);
